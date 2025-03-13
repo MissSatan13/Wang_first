@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生列表</title>
+</head>
+<body>
+    <h1>学生列表</h1>
+    <table border="1">
+        <tr>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>平均成绩</th>
+            <th>操作</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student['name'] }}</td>
+            <td>{{ student['age'] }}</td>
+            <td>{{ student['avg_grade'] or '无成绩' }}</td>
+            <td>
+                <a href="{{ url_for('view_grades', student_id=student['id']) }}">查看成绩</a>
+                <a href="{{ url_for('delete_student', student_id=student['id']) }}">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('index') }}">返回首页</a>
+</body>
+</html>

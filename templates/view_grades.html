@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看成绩</title>
+</head>
+<body>
+    <h1>{{ student['name'] }}的成绩</h1>
+    <p>平均成绩: {{ average_grade }}</p>
+    <ul>
+        {% for grade in grades %}
+        <li>{{ grade['subject'] }}: {{ grade['grade'] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_grade', student_id=student['id']) }}">添加成绩</a>
+    <br>
+    <a href="{{ url_for('student_list') }}">返回学生列表</a>
+</body>
+</html>
