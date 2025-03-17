@@ -1,19 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>查看成绩</title>
-</head>
-<body>
-    <h1>{{ student['name'] }}的成绩</h1>
-    <p>平均成绩: {{ average_grade }}</p>
-    <ul>
-        {% for grade in grades %}
-        <li>{{ grade['subject'] }}: {{ grade['grade'] }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('add_grade', student_id=student['id']) }}">添加成绩</a>
-    <br>
-    <a href="{{ url_for('student_list') }}">返回学生列表</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}{{ student['name'] }}的成绩 - 学生成绩管理系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">{{ student['name'] }}的成绩单</h6>
+                <a href="{{ url_for('add_grade', student_id=student['id']) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-2"></i>添加成绩
+                </a>
+            </div>
+            <div class="card-body">
+                <!-- 成绩概览 -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-left-info">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            平均成绩</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            {{ average_grade|round(2) if average_grade else '暂无' }}
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calculator fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-left-warning">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            科目数量</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            {{ grades|length }}
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-book fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成绩列表 -->
+                {% if grades %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>科目</th>
+                                <th>成绩</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for grade in grades %}
+                            <tr>
+                                <td>{{ grade['subject'] }}</td>
+                                <td>{{ grade['grade'] }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if grade['grade'] >= 60 else 'danger' }}">
+                                        {{ '及格' if grade['grade'] >= 60 else '不及格' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm" 
+                                            onclick="confirmDeleteGrade('{{ grade['id'] }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>暂无成绩记录
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 学生信息卡片 -->
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">学生信息</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>姓名：</strong>{{ student['name'] }}
+                </div>
+                <div class="mb-3">
+                    <strong>年龄：</strong>{{ student['age'] }}
+                </div>
+                <div class="mb-3">
+                    <strong>班级：</strong>{{ student['class_name'] }}
+                </div>
+                <hr>
+                <div class="d-grid">
+                    <a href="{{ url_for('student_list') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>返回学生列表
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmDeleteGrade(gradeId) {
+    if (confirm('确定要删除这条成绩记录吗？此操作不可撤销。')) {
+        window.location.href = `/delete_grade/${gradeId}`;
+    }
+}
+</script>
+{% endblock %}

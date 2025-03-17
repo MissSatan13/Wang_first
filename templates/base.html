@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}学生成绩管理系统{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        
+        .sidebar {
+            min-height: 100vh;
+            background-color: var(--primary-color);
+            background-image: linear-gradient(180deg, var(--primary-color) 10%, #224abe 100%);
+        }
+        
+        .sidebar-link {
+            color: rgba(255,255,255,.8);
+            padding: 1rem;
+            display: block;
+            transition: all 0.2s;
+        }
+        
+        .sidebar-link:hover {
+            color: white;
+            background-color: rgba(255,255,255,.1);
+            text-decoration: none;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,.15);
+        }
+        
+        .table th {
+            background-color: #f8f9fc;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #224abe;
+            border-color: #224abe;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="col-md-2 px-0 sidebar">
+                <div class="py-4 text-center">
+                    <h4 class="text-white">学生成绩管理系统</h4>
+                </div>
+                <div class="nav flex-column">
+                    <a href="{{ url_for('index') }}" class="sidebar-link">
+                        <i class="fas fa-home me-2"></i>首页
+                    </a>
+                    <a href="{{ url_for('student_list') }}" class="sidebar-link">
+                        <i class="fas fa-users me-2"></i>学生列表
+                    </a>
+                    <a href="{{ url_for('add_student') }}" class="sidebar-link">
+                        <i class="fas fa-user-plus me-2"></i>添加学生
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 主要内容区 -->
+            <div class="col-md-10 p-4">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- 页面特定的JavaScript -->
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

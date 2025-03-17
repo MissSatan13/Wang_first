@@ -9,7 +9,8 @@ def init_db():
     c.execute('''CREATE TABLE IF NOT EXISTS students (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
-                    age INTEGER NOT NULL
+                    age INTEGER NOT NULL,
+                    class_name TEXT NOT NULL
                 )''')
 
     # 创建成绩表
